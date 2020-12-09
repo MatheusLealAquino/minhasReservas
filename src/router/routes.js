@@ -3,7 +3,31 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
+      {
+        path: '',
+        name: 'index',
+        component: () => import('pages/Index.vue'),
+      },
+    ],
+  },
+  {
+    path: '/reservas',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        redirect: '/',
+      },
+      {
+        path: 'criar',
+        name: 'reservations-create',
+        component: () => import('pages/reservations/Create.vue'),
+      },
+      {
+        path: 'configuracoes',
+        name: 'reservations-configurations',
+        component: () => import('pages/reservations/Configurations.vue'),
+      },
     ],
   },
 

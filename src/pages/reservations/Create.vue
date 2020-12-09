@@ -1,0 +1,149 @@
+<template>
+  <q-page class="q-pa-md">
+    <q-form
+      @submit="onSubmit"
+      @reset="onReset"
+      class="q-gutter-md"
+    >
+      <q-input
+        filled
+        v-model="name"
+        label="Nome da reserva *"
+        lazy-rules
+        :rules="[ val => val && val.length > 0 || 'Por favor, digite algo']"
+      />
+
+      <q-input
+        filled
+        type="number"
+        v-model="goal"
+        label="Sua meta (R$)*"
+        lazy-rules
+        :rules="[
+          val => val !== null && val !== '' || 'Por favor, digite sua meta',
+          val => val > 0 || 'Por favor, digite uma meta maior que zero'
+        ]"
+      />
+
+      <q-input
+        filled
+        type="number"
+        v-model="mothlyContribution"
+        label="Aporte mensal (R$)*"
+        lazy-rules
+        :rules="[
+          val => val !== null && val !== '' || 'Por favor, digite um valor para seu aporte mensal',
+          val => val > 0 || 'Por favor, digite um aporte mensal maior que zero'
+        ]"
+      />
+
+      <q-select
+        filled
+        v-model="account"
+        use-input
+        stack-label
+        input-debounce="0"
+        label="Banco"
+        :options="accountsOptions"
+        @filter="filterFn"
+        behavior="menu"
+        lazy-rules
+        :rules="[
+          val => val !== null && val !== '' || 'Por favor, selecione um banco',
+        ]"
+      >
+        <template v-slot:no-option>
+          <q-item>
+            <q-item-section class="text-grey">
+              Sem resultados
+            </q-item-section>
+          </q-item>
+        </template>
+        <template v-slot:append>
+          <q-icon
+            v-if="account !== null"
+            class="cursor-pointer"
+            name="clear"
+            @click.stop="account = null"
+          />
+        </template>
+      </q-select>
+
+      <div>
+        <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+        <q-btn label="Submit" type="submit" color="primary"/>
+      </div>
+    </q-form>
+  </q-page>
+</template>
+
+<script>
+export default {
+  name: 'CreateReservation',
+  data: () => ({
+    name: null,
+    goal: null,
+    mothlyContribution: null,
+    account: null,
+    accountsOptions: [],
+  }),
+  computed: {
+    accounts() {
+      return [
+        'Itaú',
+        'Bradesco',
+        'Santander',
+        'Banco do Brasil',
+        'Caixa Economica',
+        'Nubank',
+        'Inter',
+        'Next',
+        'Neon',
+        'Outro',
+      ];
+    },
+  },
+
+  methods: {
+    filterFn(val, update) {
+      if (val === '') {
+        update(() => {
+          this.accountsOptions = this.accounts;
+        });
+        return;
+      }
+
+      update(() => {
+        const needle = val.toLowerCase();
+        this.accountsOptions = this.accounts.filter((v) => v.toLowerCase().indexOf(needle) > -1);
+      });
+    },
+
+    onSubmit() {
+      if (this.accept !== true) {
+        this.$q.notify({
+          color: 'red-5',
+          textColor: 'white',
+          icon: 'warning',
+          message: 'You need to accept the license and terms first',
+        });
+      } else {
+        this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: 'Submitted',
+        });
+      }
+    },
+
+    onReset() {
+      this.name = null;
+      this.goal = null;
+      this.mothlyContribution = null;
+      this.account = null;
+      this.accountsOptions = this.accounts;
+    },
+  },
+};
+</script>
