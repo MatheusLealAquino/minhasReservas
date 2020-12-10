@@ -1,9 +1,9 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="q-pa-md q-gutter-md">
+    <div class="text-h4">Criar reserva</div>
     <q-form
       @submit="onSubmit"
       @reset="onReset"
-      class="q-gutter-md"
     >
       <q-input
         filled
@@ -69,6 +69,25 @@
         </template>
       </q-select>
 
+      <div class="q-mb-md">
+        <div class="text-subtitle1 text-weight-light">Capa:</div>
+        <q-carousel
+          animated
+          v-model="slide"
+          swipeable
+          arrows
+          thumbnails
+          infinite
+        >
+          <q-carousel-slide
+            v-for="(image, index) in defaultImages"
+            :key="index"
+            :name="index"
+            :img-src="image"
+          />
+        </q-carousel>
+      </div>
+
       <div>
         <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
         <q-btn label="Submit" type="submit" color="primary"/>
@@ -81,6 +100,7 @@
 export default {
   name: 'CreateReservation',
   data: () => ({
+    slide: 0,
     name: null,
     goal: null,
     mothlyContribution: null,
@@ -88,6 +108,21 @@ export default {
     accountsOptions: [],
   }),
   computed: {
+    defaultImages() {
+      return [
+        '../images/background/car_road.jpg',
+        '../images/background/car_trip.jpg',
+        '../images/background/cristimas_gift.jpg',
+        '../images/background/gift.jpg',
+        '../images/background/house.jpg',
+        '../images/background/money_grow.jpg',
+        '../images/background/retire_game.jpg',
+        '../images/background/retire_park.jpg',
+        '../images/background/tablet_graph.jpg',
+        '../images/background/travel_items.jpg',
+        '../images/background/travel_plain.jpg',
+      ];
+    },
     accounts() {
       return [
         'Itaú',
@@ -138,6 +173,7 @@ export default {
     },
 
     onReset() {
+      this.slide = 0;
       this.name = null;
       this.goal = null;
       this.mothlyContribution = null;

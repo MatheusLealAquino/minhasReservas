@@ -19,6 +19,11 @@ const routes = [
         redirect: '/',
       },
       {
+        path: ':id',
+        name: 'reservations-reservation',
+        component: () => import('pages/reservations/Reservation.vue'),
+      },
+      {
         path: 'criar',
         name: 'reservations-create',
         component: () => import('pages/reservations/Create.vue'),

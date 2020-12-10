@@ -7,8 +7,11 @@
             <q-skeleton type="text" />
           </q-card-section>
           <q-card-section v-else>
-            <div class="text-h5">Total: R$ {{total}}</div>
-            <div class="text-h6">Reservas criadas: {{ reservations.length }}</div>
+            <div class="text-body1 text-weight-bolder">
+              Status {{ reservations.length > 1 ? 'das  reservas' : 'da reserva' }}:
+            </div>
+            <div class="text-h6">Total: R$ {{ total }}</div>
+            <div class="text-subtitle1">Quantidade de reservas: {{ reservations.length }}</div>
           </q-card-section>
         </q-card>
     </div>
@@ -29,6 +32,7 @@
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
       <q-btn
         round
+        size="lg"
         color="green"
         icon="account_balance"
         :to="{ name: 'reservations-create' }"
@@ -52,6 +56,7 @@ export default {
     reservations() {
       return [
         {
+          _id: 1,
           picture: '',
           name: 'Aposentadoria',
           accumulated: 7000.00,
@@ -63,6 +68,7 @@ export default {
           image: '../images/background/default.jpg',
         },
         {
+          _id: 2,
           picture: '',
           name: 'Carro',
           accumulated: 7000.00,
