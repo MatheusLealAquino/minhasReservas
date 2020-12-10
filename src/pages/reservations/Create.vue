@@ -3,7 +3,6 @@
     <div class="text-h4">Criar reserva</div>
     <q-form
       @submit="onSubmit"
-      @reset="onReset"
     >
       <q-input
         filled
@@ -69,7 +68,7 @@
         </template>
       </q-select>
 
-      <div class="q-mb-md">
+      <div class="q-mb-sm">
         <div class="text-subtitle1 text-weight-light">Capa:</div>
         <q-carousel
           animated
@@ -78,6 +77,7 @@
           arrows
           thumbnails
           infinite
+          height="40vh"
         >
           <q-carousel-slide
             v-for="(image, index) in defaultImages"
@@ -89,8 +89,21 @@
       </div>
 
       <div>
-        <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
-        <q-btn label="Submit" type="submit" color="primary"/>
+        <q-btn
+          label="Salvar"
+          class="full-width q-mb-lg"
+          type="submit"
+          color="teal"
+        />
+
+        <q-btn
+          label="Voltar"
+          :to="{name: 'index'}"
+          class="full-width"
+          type="reset"
+          color="black"
+          outline
+        />
       </div>
     </q-form>
   </q-page>
