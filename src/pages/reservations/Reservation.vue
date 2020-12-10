@@ -1,6 +1,8 @@
 <template>
   <q-page class="q-pa-md q-gutter-md">
-    <div class="text-h5">{{ reservation.name }}</div>
+    <q-skeleton v-if="showSkeleton" type="text" />
+    <div v-else class="text-h5">{{ reservation.name }}</div>
+
     <Reservation
       :showSkeleton="showSkeleton"
       :openPage="false"
@@ -12,40 +14,16 @@
       :account="reservation.account"
     />
 
-    <div>
-      <div class="text-subtitle1">Operações: </div>
-      <q-list bordered separator>
-        <div v-if="!showSkeleton">
-          <q-item clickable v-ripple>
-            <q-item-section>
-              <q-item-label overline>Retirada</q-item-label>
-              <q-item-label>R$ 80,00</q-item-label>
-              <q-item-label caption>10 nov</q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-item clickable v-ripple>
-            <q-item-section>
-              <q-item-label overline>Deposito</q-item-label>
-              <q-item-label>R$ 100,00</q-item-label>
-              <q-item-label caption>10 nov</q-item-label>
-            </q-item-section>
-          </q-item>
-        </div>
-        <div v-else>
-          <q-item clickable v-ripple>
-            <q-item-section>
-              <q-skeleton type="text" />
-              <q-skeleton type="text" />
-              <q-skeleton type="text" />
-            </q-item-section>
-          </q-item>
-        </div>
-      </q-list>
-    </div>
+    <Operations
+      v-if="operations && operations.length > 0"
+      :showSkeleton="showSkeleton"
+      :operations="operations"
+    />
 
     <div>
+      <q-skeleton v-if="showSkeleton" type="QBtn" />
       <q-btn
+        v-else
         label="Voltar"
         :to="{name: 'index'}"
         class="full-width"
@@ -54,6 +32,7 @@
         outline
       />
     </div>
+
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
       <q-btn
         round
@@ -67,6 +46,7 @@
 </template>
 
 <script>
+import Operations from '../../components/reservations/Operations.vue';
 import Reservation from '../../components/reservations/Reservation';
 
 export default {
@@ -76,6 +56,7 @@ export default {
   }),
   components: {
     Reservation,
+    Operations,
   },
   computed: {
     reservation() {
@@ -90,6 +71,20 @@ export default {
         updatedAt: new Date('2020-12-07'),
         image: '../images/background/default.jpg',
       };
+    },
+    operations() {
+      return [
+        {
+          type: 'sub',
+          value: 200.00,
+          date: new Date(),
+        },
+        {
+          type: 'add',
+          value: 500.00,
+          date: new Date(),
+        },
+      ];
     },
   },
   mounted() {

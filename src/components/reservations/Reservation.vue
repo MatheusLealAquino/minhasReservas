@@ -13,10 +13,10 @@
 
     <q-card-section v-else>
       <div v-if="name" class="text-h6">{{ name }}</div>
-      <div class="text-subtitle2">Acumulado: R$ {{ accumulated }}</div>
-      <div>Meta: R$ {{ goal }}</div>
-      <div>Aporte mensal: R$ {{ mothlyContribution }}</div>
-      <div>Banco: {{ account }}</div>
+      <div v-if="accumulated" class="text-subtitle2">Acumulado: R$ {{ accumulated }}</div>
+      <div v-if="goal">Meta: R$ {{ goal }}</div>
+      <div v-if="mothlyContribution">Aporte mensal: R$ {{ mothlyContribution }}</div>
+      <div v-if="account">Banco: {{ account }}</div>
     </q-card-section>
   </q-card>
 </template>
