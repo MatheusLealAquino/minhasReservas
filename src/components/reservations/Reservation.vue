@@ -1,7 +1,7 @@
 <template>
   <q-card class="my-card" @click="goToReservation">
     <q-skeleton width="92vw" height="150px" v-if="showSkeleton" />
-    <img v-else width="95vw" height="250px" :src="reservation.image">
+    <img v-else width="95vw" height="250px" :src="image">
 
     <q-card-section v-if="showSkeleton">
       <q-skeleton type="text" />
@@ -12,11 +12,11 @@
     </q-card-section>
 
     <q-card-section v-else>
-      <div class="text-h6">{{ reservation.name }}</div>
-      <div class="text-subtitle2">Acumulado: R$ {{ reservation.accumulated }}</div>
-      <div>Meta: R$ {{ reservation.goal }}</div>
-      <div>Aporte mensal: R$ {{ reservation.mothlyContribution }}</div>
-      <div>Banco: {{ reservation.account }}</div>
+      <div v-if="name" class="text-h6">{{ name }}</div>
+      <div class="text-subtitle2">Acumulado: R$ {{ accumulated }}</div>
+      <div>Meta: R$ {{ goal }}</div>
+      <div>Aporte mensal: R$ {{ mothlyContribution }}</div>
+      <div>Banco: {{ account }}</div>
     </q-card-section>
   </q-card>
 </template>
@@ -28,16 +28,45 @@ export default {
     showSkeleton: {
       default: true,
     },
-    reservation: {
-      type: Object,
+    identification: {
+      type: String,
+      required: true,
+    },
+    image: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: false,
+    },
+    accumulated: {
+      type: Number,
+      required: true,
+    },
+    goal: {
+      type: Number,
+      required: true,
+    },
+    mothlyContribution: {
+      type: Number,
+      required: true,
+    },
+    account: {
+      type: String,
+      required: true,
+    },
+    openPage: {
+      type: Boolean,
+      default: true,
     },
   },
   data: () => ({
   }),
   methods: {
     goToReservation() {
-      if (this.reservation._id) {
-        this.$router.push({ name: 'reservations-reservation', params: { id: this.reservation._id } });
+      if (this.identification && this.openPage) {
+        this.$router.push({ name: 'reservations-reservation', params: { id: this.identification } });
       }
     },
   },
