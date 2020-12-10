@@ -8,10 +8,10 @@
           </q-card-section>
           <q-card-section v-else>
             <div class="text-body1 text-weight-bolder">
-              Status {{ reservations.length > 1 ? 'das  reservas' : 'da reserva' }}:
+              Status {{ totalReservations > 1 ? 'das  reservas' : 'da reserva' }}:
             </div>
             <div class="text-h6">Total: R$ {{ total }}</div>
-            <div class="text-subtitle1">Quantidade de reservas: {{ reservations.length }}</div>
+            <div class="text-subtitle1">Quantidade de reservas: {{ totalReservations }}</div>
           </q-card-section>
         </q-card>
     </div>
@@ -24,7 +24,13 @@
       >
         <Reservation
           :showSkeleton="showSkeleton"
-          :reservation="reservation"
+          :identification="reservation._id"
+          :name="reservation.name"
+          :image="reservation.image"
+          :accumulated="reservation.accumulated"
+          :goal="reservation.goal"
+          :mothlyContribution="reservation.mothlyContribution"
+          :account="reservation.account"
         />
       </q-intersection>
     </div>
@@ -56,8 +62,7 @@ export default {
     reservations() {
       return [
         {
-          _id: 1,
-          picture: '',
+          _id: '1',
           name: 'Aposentadoria',
           accumulated: 7000.00,
           goal: 1000000.00,
@@ -68,8 +73,7 @@ export default {
           image: '../images/background/default.jpg',
         },
         {
-          _id: 2,
-          picture: '',
+          _id: '2',
           name: 'Carro',
           accumulated: 7000.00,
           goal: 20000.00,
@@ -81,6 +85,9 @@ export default {
         },
       ];
     },
+    totalReservations() {
+      return this.reservations.length;
+    },
     total() {
       return this.reservations.reduce((acc, value) => acc.accumulated + value.accumulated);
     },
@@ -88,7 +95,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.showSkeleton = false;
-    }, 1500);
+    }, 1000);
   },
 };
 </script>
