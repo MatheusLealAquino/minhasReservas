@@ -1,9 +1,7 @@
 <template>
   <q-page class="q-pa-md q-gutter-md">
     <div class="text-h4">Criar reserva</div>
-    <q-form
-      @submit="onSubmit"
-    >
+    <q-form @submit="onSubmit">
       <q-input
         filled
         v-model="name"
