@@ -8,8 +8,10 @@
         <q-item clickable v-ripple v-for="(operation, index) in operations" :key="index">
           <q-item-section>
             <q-item-label overline>{{ getTypeOperation(operation.type) }}</q-item-label>
-            <q-item-label>R$ {{ operation.value }}</q-item-label> <!-- R$ 500,00 -->
-            <q-item-label caption>{{ operation.date }}</q-item-label> <!-- 10 nov -->
+            <q-item-label>{{ moneyFilter(operation.value) }}</q-item-label>
+            <q-item-label caption>
+              {{ convertDate(operation.date) }}
+            </q-item-label>
           </q-item-section>
         </q-item>
       </div>
@@ -27,8 +29,12 @@
 </template>
 
 <script>
+import stringMixin from '../../mixins/string';
+import dateMixin from '../../mixins/date';
+
 export default {
   name: 'OperationsComponente',
+  mixins: [stringMixin, dateMixin],
   props: {
     showSkeleton: {
       default: true,

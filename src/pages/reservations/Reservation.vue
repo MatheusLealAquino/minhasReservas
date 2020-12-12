@@ -4,8 +4,8 @@
     <div v-else class="text-h5">{{ reservation.name }}</div>
 
     <Reservation
-      :showSkeleton="showSkeleton"
       :openPage="false"
+      :showSkeleton="showSkeleton"
       :identification="reservation._id"
       :image="reservation.image"
       :accumulated="reservation.accumulated"
