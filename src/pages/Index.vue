@@ -31,6 +31,7 @@
           :goal="reservation.goal"
           :mothlyContribution="reservation.mothlyContribution"
           :account="reservation.account"
+          :createdAt="reservation.createdAt"
         />
       </q-intersection>
     </div>

@@ -12,6 +12,7 @@
       :goal="reservation.goal"
       :mothlyContribution="reservation.mothlyContribution"
       :account="reservation.account"
+      :createdAt="reservation.createdAt"
     />
 
     <Operations
