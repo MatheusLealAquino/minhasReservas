@@ -39,8 +39,8 @@
         round
         size="lg"
         color="green"
-        icon="account_balance"
-        :to="{ name: 'reservations-create' }"
+        icon="monetization_on"
+        :to="{ name: 'reservations-operation' }"
       />
     </q-page-sticky>
   </q-page>
