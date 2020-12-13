@@ -35,7 +35,7 @@ const routes = [
       },
       {
         path: ':id/configuracoes',
-        name: 'reservations-configurations',
+        name: 'reservations-configuration',
         component: () => import('pages/reservations/Configuration.vue'),
       },
     ],

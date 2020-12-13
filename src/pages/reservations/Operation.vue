@@ -43,7 +43,7 @@
               label="Salvar"
               class="full-width"
               type="submit"
-              color="teal"
+              color="primary"
             />
           </div>
         </q-form>
@@ -80,7 +80,7 @@
               label="Salvar"
               class="full-width"
               type="submit"
-              color="teal"
+              color="primary"
             />
           </div>
         </q-form>
@@ -90,9 +90,11 @@
     <div class="q-pa-md">
       <q-skeleton v-if="showSkeleton" type="QBtn" />
       <q-btn
-        v-else
         label="Voltar"
-        :to="{name: 'index'}"
+        :to="{
+          name: 'reservations-reservation',
+          params: { id: this.reservation._id }
+        }"
         class="full-width"
         type="reset"
         color="black"
@@ -103,11 +105,12 @@
 </template>
 
 <script>
+import stringMixin from '../../mixins/string';
 import dateMixin from '../../mixins/date';
 
 export default {
   name: 'OperationPage',
-  mixins: [dateMixin],
+  mixins: [stringMixin, dateMixin],
   data: () => ({
     showSkeleton: false,
     tab: 'add',
@@ -119,6 +122,21 @@ export default {
       (val) => (val && val > 0) || 'Por favor, digite um valor positivo',
     ],
   }),
+  computed: {
+    reservation() {
+      return {
+        _id: '1',
+        name: 'Aposentadoria',
+        accumulated: 7000.00,
+        goal: 1000000.00,
+        mothlyContribution: 500,
+        account: 'Nubank',
+        createdAt: new Date('2020-12-07 22:00:00'),
+        updatedAt: new Date('2020-12-07'),
+        image: '../images/background/default.jpg',
+      };
+    },
+  },
   methods: {
     add() {
     },
@@ -128,6 +146,8 @@ export default {
   created() {
     this.addDate = this.getNow();
     this.subDate = this.getNow();
+
+    this.addValue = this.moneyFilter(this.reservation.mothlyContribution);
   },
 };
 </script>

@@ -43,6 +43,16 @@
         :to="{ name: 'reservations-operation' }"
       />
     </q-page-sticky>
+
+    <q-page-sticky position="top-right" :offset="[18, 18]">
+      <q-btn
+        round
+        size="sm"
+        color="grey-5"
+        icon="settings"
+        :to="{ name: 'reservations-configuration' }"
+      />
+    </q-page-sticky>
   </q-page>
 </template>
 

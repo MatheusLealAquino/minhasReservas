@@ -12,8 +12,10 @@
 
       <q-input
         filled
-        type="number"
         v-model="goal"
+        mask="#.##"
+        fill-mask="0"
+        reverse-fill-mask
         label="Sua meta (R$)*"
         lazy-rules
         :rules="[
@@ -24,7 +26,9 @@
 
       <q-input
         filled
-        type="number"
+        mask="#.##"
+        fill-mask="0"
+        reverse-fill-mask
         v-model="mothlyContribution"
         label="Aporte mensal (R$)*"
         lazy-rules
@@ -91,7 +95,7 @@
           label="Salvar"
           class="full-width q-mb-lg"
           type="submit"
-          color="teal"
+          color="primary"
         />
 
         <q-btn
@@ -108,6 +112,9 @@
 </template>
 
 <script>
+import defaultImages from '../../assets/defaultImages';
+import accounts from '../../assets/accounts';
+
 export default {
   name: 'CreateReservation',
   data: () => ({
@@ -117,39 +124,10 @@ export default {
     mothlyContribution: null,
     account: null,
     accountsOptions: [],
-  }),
-  computed: {
-    defaultImages() {
-      return [
-        '../images/background/car_road.jpg',
-        '../images/background/car_trip.jpg',
-        '../images/background/cristimas_gift.jpg',
-        '../images/background/gift.jpg',
-        '../images/background/house.jpg',
-        '../images/background/money_grow.jpg',
-        '../images/background/retire_game.jpg',
-        '../images/background/retire_park.jpg',
-        '../images/background/tablet_graph.jpg',
-        '../images/background/travel_items.jpg',
-        '../images/background/travel_plain.jpg',
-      ];
-    },
-    accounts() {
-      return [
-        'Itaú',
-        'Bradesco',
-        'Santander',
-        'Banco do Brasil',
-        'Caixa Economica',
-        'Nubank',
-        'Inter',
-        'Next',
-        'Neon',
-        'Outro',
-      ];
-    },
-  },
 
+    defaultImages: [],
+    accounts: [],
+  }),
   methods: {
     filterFn(val, update) {
       if (val === '') {
@@ -191,6 +169,10 @@ export default {
       this.account = null;
       this.accountsOptions = this.accounts;
     },
+  },
+  created() {
+    this.defaultImages = defaultImages;
+    this.accounts = accounts;
   },
 };
 </script>
