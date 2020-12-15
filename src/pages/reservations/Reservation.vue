@@ -101,7 +101,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.showSkeleton = false;
-    }, 1000);
+    }, 600);
   },
 };
 </script>

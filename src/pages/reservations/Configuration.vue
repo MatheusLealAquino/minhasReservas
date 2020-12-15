@@ -76,12 +76,10 @@
       <div class="q-mb-sm">
         <div class="text-subtitle1 text-weight-light">Capa:</div>
         <q-carousel
-          animated
           v-model="slide"
           swipeable
           arrows
           thumbnails
-          infinite
           height="40vh"
         >
           <q-carousel-slide
