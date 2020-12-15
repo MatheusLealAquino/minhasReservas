@@ -23,7 +23,7 @@
         lazy-rules
         :rules="[
           val => val !== null && val !== '' || 'Por favor, digite sua meta',
-          val => val > 0 || 'Por favor, digite uma meta maior que zero'
+          val => Number(val) > 0 || 'Por favor, digite uma meta maior que zero'
         ]"
       />
 
@@ -37,7 +37,7 @@
         lazy-rules
         :rules="[
           val => val !== null && val !== '' || 'Por favor, digite um valor para seu aporte mensal',
-          val => val > 0 || 'Por favor, digite um aporte mensal maior que zero'
+          val => Number(val) > 0 || 'Por favor, digite um aporte mensal maior que zero'
         ]"
       />
 
