@@ -87,10 +87,10 @@ export default {
       ];
     },
     totalReservations() {
-      return this.reservationsMock.length;
+      return this.reservations.length;
     },
     total() {
-      return this.reservationsMock.reduce((acc, value) => acc.accumulated + value.accumulated);
+      return this.reservations.reduce((acc, value) => acc + value.accumulated, 0);
     },
   },
   async mounted() {
@@ -98,7 +98,6 @@ export default {
       this.showSkeleton = false;
     }, 600);
 
-    // await reservationService.createReservation(this.reservationsMock[0]);
     this.reservations = await reservationService.getReservations();
   },
 };
