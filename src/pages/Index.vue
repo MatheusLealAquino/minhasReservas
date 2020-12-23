@@ -49,21 +49,22 @@
 </template>
 
 <script>
+import reservationService from '../services/reservation';
 import Reservation from '../components/reservations/Reservation';
 
 export default {
   name: 'PageIndex',
   data: () => ({
     showSkeleton: true,
+    reservations: [],
   }),
   components: {
     Reservation,
   },
   computed: {
-    reservations() {
+    reservationsMock() {
       return [
         {
-          _id: '1',
           name: 'Aposentadoria',
           accumulated: 7000.00,
           goal: 1000000.00,
@@ -74,7 +75,6 @@ export default {
           image: '../images/background/default.jpg',
         },
         {
-          _id: '2',
           name: 'Carro',
           accumulated: 7000.00,
           goal: 20000.00,
@@ -87,16 +87,19 @@ export default {
       ];
     },
     totalReservations() {
-      return this.reservations.length;
+      return this.reservationsMock.length;
     },
     total() {
-      return this.reservations.reduce((acc, value) => acc.accumulated + value.accumulated);
+      return this.reservationsMock.reduce((acc, value) => acc.accumulated + value.accumulated);
     },
   },
-  mounted() {
+  async mounted() {
     setTimeout(() => {
       this.showSkeleton = false;
     }, 600);
+
+    // await reservationService.createReservation(this.reservationsMock[0]);
+    this.reservations = await reservationService.getReservations();
   },
 };
 </script>
