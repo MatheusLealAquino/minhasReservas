@@ -17,10 +17,9 @@
     </div>
 
     <div class="row items-start q-gutter-md">
-      <q-intersection
+      <div
         v-for="(reservation, index) in reservations"
         :key="index"
-        transition="scale"
       >
         <Reservation
           :showSkeleton="showSkeleton"
@@ -33,7 +32,7 @@
           :account="reservation.account"
           :createdAt="reservation.createdAt"
         />
-      </q-intersection>
+      </div>
     </div>
 
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
@@ -49,7 +48,7 @@
 </template>
 
 <script>
-import reservationService from '../services/reservation';
+import reservationDao from '../daos/reservation';
 import Reservation from '../components/reservations/Reservation';
 
 export default {
@@ -74,16 +73,6 @@ export default {
           updatedAt: new Date('2020-12-07'),
           image: '../images/background/default.jpg',
         },
-        {
-          name: 'Carro',
-          accumulated: 7000.00,
-          goal: 20000.00,
-          mothlyContribution: 300,
-          account: 'Nubank',
-          createdAt: new Date('2020-12-07 00:00:00'),
-          updatedAt: new Date('2020-12-07'),
-          image: '../images/background/default.jpg',
-        },
       ];
     },
     totalReservations() {
@@ -98,7 +87,7 @@ export default {
       this.showSkeleton = false;
     }, 600);
 
-    this.reservations = await reservationService.getReservations();
+    this.reservations = await reservationDao.getReservations();
   },
 };
 </script>

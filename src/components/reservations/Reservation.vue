@@ -14,9 +14,11 @@
 
     <q-card-section v-else>
       <div v-if="name" class="text-h6">{{ name }}</div>
-      <div v-if="accumulated" class="text-subtitle2">Acumulado: {{ moneyFilter(accumulated) }}</div>
-      <div v-if="goal">Meta: {{ moneyFilter(goal) }}</div>
-      <div v-if="mothlyContribution">Aporte mensal: {{ moneyFilter(mothlyContribution) }}</div>
+      <div v-if="accumulated || accumulated === 0" class="text-subtitle2">
+        Acumulado: R$ {{ moneyFilter(accumulated) }}
+      </div>
+      <div v-if="goal">Meta: R$ {{ moneyFilter(goal) }}</div>
+      <div v-if="mothlyContribution">Aporte mensal: R$ {{ moneyFilter(mothlyContribution) }}</div>
       <div v-if="account">Banco: {{ account }}</div>
       <div v-if="createdAt" class="text-caption">Criação: {{ convertDate(createdAt) }}</div>
     </q-card-section>

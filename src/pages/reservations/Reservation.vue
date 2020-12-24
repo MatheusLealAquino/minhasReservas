@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import reservationDao from '../../daos/reservation';
 import Operations from '../../components/reservations/Operations.vue';
 import Reservation from '../../components/reservations/Reservation';
 
@@ -70,38 +71,30 @@ export default {
     Operations,
   },
   computed: {
-    reservation() {
-      return {
-        _id: '1',
-        name: 'Aposentadoria',
-        accumulated: 7000.00,
-        goal: 1000000.00,
-        mothlyContribution: 500,
-        account: 'Nubank',
-        createdAt: new Date('2020-12-07 22:00:00'),
-        updatedAt: new Date('2020-12-07'),
-        image: '../images/background/default.jpg',
-      };
-    },
     operations() {
-      return [
-        {
-          type: 'sub',
-          value: 200.00,
-          date: new Date(),
-        },
-        {
-          type: 'add',
-          value: 500.00,
-          date: new Date(),
-        },
-      ];
+      return this.reservation
+        && this.reservation.operations
+        ? this.reservation.operations : [];
+      // return [
+      //   {
+      //     type: 'sub',
+      //     value: 200.00,
+      //     date: new Date(),
+      //   },
+      //   {
+      //     type: 'add',
+      //     value: 500.00,
+      //     date: new Date(),
+      //   },
+      // ];
     },
   },
-  mounted() {
+  async mounted() {
     setTimeout(() => {
       this.showSkeleton = false;
     }, 600);
+
+    [this.reservation] = await reservationDao.getReservation(this.$route.params.id);
   },
 };
 </script>

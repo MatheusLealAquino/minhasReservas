@@ -2,6 +2,25 @@
   <q-page class="q-pa-md q-gutter-md">
     <div class="text-h4">Criar reserva</div>
     <q-form @submit="onSubmit">
+      <div class="q-mb-sm">
+        <div class="text-subtitle1 text-weight-light">Capa:</div>
+        <q-carousel
+          animated
+          v-model="slide"
+          swipeable
+          arrows
+          thumbnails
+          infinite
+        >
+          <q-carousel-slide
+            v-for="(image, index) in defaultImages"
+            :key="index"
+            :name="index"
+            :img-src="image"
+          />
+        </q-carousel>
+      </div>
+
       <q-input
         filled
         v-model="name"
@@ -70,26 +89,6 @@
         </template>
       </q-select>
 
-      <div class="q-mb-sm">
-        <div class="text-subtitle1 text-weight-light">Capa:</div>
-        <q-carousel
-          animated
-          v-model="slide"
-          swipeable
-          arrows
-          thumbnails
-          infinite
-          height="40vh"
-        >
-          <q-carousel-slide
-            v-for="(image, index) in defaultImages"
-            :key="index"
-            :name="index"
-            :img-src="image"
-          />
-        </q-carousel>
-      </div>
-
       <div>
         <q-btn
           label="Salvar"
@@ -112,6 +111,7 @@
 </template>
 
 <script>
+import reservationDao from '../../daos/reservation';
 import defaultImages from '../../assets/defaultImages';
 import accounts from '../../assets/accounts';
 
@@ -143,20 +143,32 @@ export default {
       });
     },
 
-    onSubmit() {
-      if (this.accept !== true) {
-        this.$q.notify({
-          color: 'red-5',
-          textColor: 'white',
-          icon: 'warning',
-          message: 'You need to accept the license and terms first',
+    async onSubmit() {
+      try {
+        await reservationDao.createReservation({
+          name: this.name,
+          accumulated: 0,
+          goal: Number(this.goal),
+          mothlyContribution: Number(this.mothlyContribution),
+          account: this.account,
+          image: this.defaultImages[this.slide],
+          operations: [],
         });
-      } else {
+
         this.$q.notify({
           color: 'green-4',
           textColor: 'white',
           icon: 'cloud_done',
-          message: 'Submitted',
+          message: 'Reserva criada com sucesso!',
+        });
+
+        this.$router.push({ name: 'index' });
+      } catch (err) {
+        this.$q.notify({
+          color: 'red-5',
+          textColor: 'white',
+          icon: 'warning',
+          message: 'Erro ao criar reserva, verifique as informações digitadas',
         });
       }
     },
