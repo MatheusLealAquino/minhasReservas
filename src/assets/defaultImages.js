@@ -1,14 +1,16 @@
+/* eslint-disable global-require */
+
 module.exports = [
-  '../images/background/default.jpg',
-  '../images/background/car_road.jpg',
-  '../images/background/car_trip.jpg',
-  '../images/background/cristimas_gift.jpg',
-  '../images/background/gift.jpg',
-  '../images/background/house.jpg',
-  '../images/background/money_grow.jpg',
-  '../images/background/retire_game.jpg',
-  '../images/background/retire_park.jpg',
-  '../images/background/tablet_graph.jpg',
-  '../images/background/travel_items.jpg',
-  '../images/background/travel_plain.jpg',
+  require('./images/background/default.jpg'),
+  require('./images/background/car_road.jpg'),
+  require('./images/background/car_trip.jpg'),
+  require('./images/background/cristimas_gift.jpg'),
+  require('./images/background/gift.jpg'),
+  require('./images/background/house.jpg'),
+  require('./images/background/money_grow.jpg'),
+  require('./images/background/retire_game.jpg'),
+  require('./images/background/retire_park.jpg'),
+  require('./images/background/tablet_graph.jpg'),
+  require('./images/background/travel_items.jpg'),
+  require('./images/background/travel_plain.jpg'),
 ];
