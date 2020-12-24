@@ -80,7 +80,6 @@
           swipeable
           arrows
           thumbnails
-          height="40vh"
         >
           <q-carousel-slide
             v-for="(image, index) in defaultImages"
@@ -135,6 +134,7 @@
 </template>
 
 <script>
+import reservationDao from '../../daos/reservation';
 import stringMixin from '../../mixins/string';
 import defaultImages from '../../assets/defaultImages';
 import accounts from '../../assets/accounts';
@@ -143,6 +143,7 @@ export default {
   name: 'Configuration',
   mixins: [stringMixin],
   data: () => ({
+    reservation: {},
     slide: 0,
     name: null,
     goal: null,
@@ -154,21 +155,6 @@ export default {
     defaultImages: [],
     accounts: [],
   }),
-  computed: {
-    reservation() {
-      return {
-        _id: '1',
-        name: 'Aposentadoria',
-        accumulated: 7000,
-        goal: 1000000,
-        mothlyContribution: 500,
-        account: 'Nubank',
-        createdAt: new Date('2020-12-07 22:00:00'),
-        updatedAt: new Date('2020-12-07'),
-        image: '../images/background/default.jpg',
-      };
-    },
-  },
   methods: {
     filterFn(val, update) {
       if (val === '') {
@@ -184,26 +170,56 @@ export default {
       });
     },
 
-    onSubmit() {
-      if (this.accept !== true) {
-        this.$q.notify({
-          color: 'red-5',
-          textColor: 'white',
-          icon: 'warning',
-          message: 'You need to accept the license and terms first',
-        });
-      } else {
+    async onSubmit() {
+      try {
+        await reservationDao.updateReservation(this.reservation._id,
+          {
+            name: this.name,
+            goal: Number(this.goal),
+            mothlyContribution: Number(this.mothlyContribution),
+            account: this.account,
+            image: this.defaultImages[this.slide],
+          });
+
         this.$q.notify({
           color: 'green-4',
           textColor: 'white',
           icon: 'cloud_done',
-          message: 'Submitted',
+          actions: [{ icon: 'close', color: 'white' }],
+          message: 'Reserva atualizada com sucesso!',
+        });
+      } catch (err) {
+        this.$q.notify({
+          color: 'red-5',
+          textColor: 'white',
+          icon: 'warning',
+          actions: [{ icon: 'close', color: 'white' }],
+          message: 'Erro ao atualizar reserva, verifique as informações digitadas',
         });
       }
     },
 
-    onDelete() {
+    async onDelete() {
+      try {
+        await reservationDao.removeReservation(this.reservation._id);
 
+        this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: 'Reserva deletada com sucesso!',
+        });
+
+        this.$router.push({ name: 'index' });
+      } catch (err) {
+        this.$q.notify({
+          color: 'red-5',
+          textColor: 'white',
+          icon: 'warning',
+          actions: [{ icon: 'close', color: 'white' }],
+          message: 'Erro ao deletar reserva, tente novamente',
+        });
+      }
     },
 
     onReset() {
@@ -215,9 +231,20 @@ export default {
       this.accountsOptions = this.accounts;
     },
   },
-  created() {
+  async mounted() {
     this.defaultImages = defaultImages;
     this.accounts = accounts;
+
+    [this.reservation] = await reservationDao.getReservation(this.$route.params.id);
+    if (!this.reservation) {
+      this.$q.notify({
+        color: 'red-5',
+        textColor: 'white',
+        icon: 'warning',
+        message: 'Não foi possível encontrar a reserva',
+      });
+      this.$router.push({ name: 'index' });
+    }
 
     this.name = this.reservation.name;
     this.goal = this.moneyFilter(this.reservation.goal);

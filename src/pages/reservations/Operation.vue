@@ -105,6 +105,7 @@
 </template>
 
 <script>
+import reservationDao from '../../daos/reservation';
 import stringMixin from '../../mixins/string';
 import dateMixin from '../../mixins/date';
 
@@ -122,30 +123,79 @@ export default {
       (val) => (val && val > 0) || 'Por favor, digite um valor positivo',
     ],
   }),
-  computed: {
-    reservation() {
-      return {
-        _id: '1',
-        name: 'Aposentadoria',
-        accumulated: 7000.00,
-        goal: 1000000.00,
-        mothlyContribution: 500,
-        account: 'Nubank',
-        createdAt: new Date('2020-12-07 22:00:00'),
-        updatedAt: new Date('2020-12-07'),
-        image: '../images/background/default.jpg',
-      };
-    },
-  },
   methods: {
-    add() {
+    async action(type, value, date) {
+      try {
+        let { accumulated } = this.reservation;
+        const { operations } = this.reservation;
+        const updateOperations = operations || [];
+
+        accumulated = Number(accumulated);
+        if (type === 'add') accumulated += Number(value);
+        else accumulated -= Number(value);
+
+        updateOperations.push({
+          type,
+          value: Number(value),
+          date,
+        });
+
+        await reservationDao.updateReservation(this.reservation._id,
+          {
+            accumulated,
+            operations: updateOperations,
+          });
+
+        this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          actions: [{ icon: 'close', color: 'white' }],
+          message: 'Operação realizada com sucesso!',
+        });
+
+        this.$router.push({ name: 'reservations-reservation', params: { id: this.reservation._id } });
+      } catch (err) {
+        this.$q.notify({
+          color: 'red-5',
+          textColor: 'white',
+          icon: 'warning',
+          actions: [{ icon: 'close', color: 'white' }],
+          message: 'Erro ao realizar esta operação, verifique as informações digitadas',
+        });
+      }
     },
-    sub() {
+    async add() {
+      await this.action('add', this.addValue, this.addDate);
+    },
+    async sub() {
+      if (this.subValue > this.reservation.accumulated) {
+        this.$q.notify({
+          color: 'red-5',
+          textColor: 'white',
+          icon: 'warning',
+          actions: [{ icon: 'close', color: 'white' }],
+          message: `Valor a ser retirado é maior que o total da reserva de R$ ${this.moneyFilter(this.reservation.accumulated)}.`,
+        });
+      } else {
+        await this.action('sub', this.subValue, this.subDate);
+      }
     },
   },
-  created() {
+  async mounted() {
     this.addDate = this.getNow();
     this.subDate = this.getNow();
+
+    [this.reservation] = await reservationDao.getReservation(this.$route.params.id);
+    if (!this.reservation) {
+      this.$q.notify({
+        color: 'red-5',
+        textColor: 'white',
+        icon: 'warning',
+        message: 'Não foi possível encontrar a reserva',
+      });
+      this.$router.push({ name: 'index' });
+    }
 
     this.addValue = this.moneyFilter(this.reservation.mothlyContribution);
   },

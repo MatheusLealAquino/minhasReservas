@@ -159,6 +159,7 @@ export default {
           color: 'green-4',
           textColor: 'white',
           icon: 'cloud_done',
+          actions: [{ icon: 'close', color: 'white' }],
           message: 'Reserva criada com sucesso!',
         });
 
@@ -168,6 +169,7 @@ export default {
           color: 'red-5',
           textColor: 'white',
           icon: 'warning',
+          actions: [{ icon: 'close', color: 'white' }],
           message: 'Erro ao criar reserva, verifique as informações digitadas',
         });
       }

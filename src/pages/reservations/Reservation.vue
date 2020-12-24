@@ -74,19 +74,8 @@ export default {
     operations() {
       return this.reservation
         && this.reservation.operations
-        ? this.reservation.operations : [];
-      // return [
-      //   {
-      //     type: 'sub',
-      //     value: 200.00,
-      //     date: new Date(),
-      //   },
-      //   {
-      //     type: 'add',
-      //     value: 500.00,
-      //     date: new Date(),
-      //   },
-      // ];
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        ? this.reservation.operations.reverse() : [];
     },
   },
   async mounted() {
@@ -95,6 +84,15 @@ export default {
     }, 600);
 
     [this.reservation] = await reservationDao.getReservation(this.$route.params.id);
+    if (!this.reservation) {
+      this.$q.notify({
+        color: 'red-5',
+        textColor: 'white',
+        icon: 'warning',
+        message: 'Não foi possível encontrar a reserva',
+      });
+      this.$router.push({ name: 'index' });
+    }
   },
 };
 </script>
