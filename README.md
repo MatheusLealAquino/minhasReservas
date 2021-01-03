@@ -22,5 +22,12 @@ npm run lint
 quasar build
 ```
 
-### Customize the configuration
-See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
+### Some images:
+See reservations        |  Create reservation |  After create reservation | Deposit in reservation
+:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------: |
+![First image](image1.jpg)  |  ![Second image](image2.jpg) | ![Third image](image3.jpg) | ![Fourth image](image4.jpg)
+
+After deposit in reservation | Edit reservation |
+:-------------------------: | :-------------------------:
+![Five image](image5.jpg) | ![Sixth image](image6.jpg)
+
