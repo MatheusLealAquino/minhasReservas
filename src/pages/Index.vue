@@ -79,7 +79,9 @@ export default {
       return this.reservations.length;
     },
     total() {
-      return this.reservations.reduce((acc, value) => acc + value.accumulated, 0);
+      return Number(
+        this.reservations.reduce((acc, value) => acc + value.accumulated, 0).toFixed(2),
+      );
     },
   },
   async mounted() {
